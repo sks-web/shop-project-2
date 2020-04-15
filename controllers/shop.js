@@ -5,6 +5,8 @@ const Cart = require("../models/cart");
 exports.dispProduct = (req, res, next) => {
     Product.fetchAll()
     .then(([rows]) => {
+        console.log(rows);
+        
         res.render("shop/product-list", {
             pageTitle: "Product Page",
             path: "/products",
@@ -78,11 +80,14 @@ exports.getCheckout = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
     const prodId = req.params.productId;
-    Product.findById(prodId, product => {
+    console.log(prodId);
+    Product.findById(prodId)
+    .then(([rows]) => {
         res.render("shop/product-details",{
-            product: product,
+            product: rows,
             pageTitle: "Porduct Detials",
             path:"/products"
         }) 
-    });
+    })
+    .catch(err => console.log(err));
 }
