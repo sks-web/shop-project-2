@@ -1,0 +1,161 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+.main-header{
+    width: 100%;
+    height: 4rem;
+    background-color: #4eaf7a;
+    margin-bottom: 2rem;
+}
+
+.main-header__list{
+    list-style: none;    
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.main-header__nav{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 4rem;
+}
+
+.main-header__item{
+    margin: 0;
+    padding: 0 2rem 0 0;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+ 
+.main-header__item a{
+    text-decoration: none;
+    color: white;
+}
+
+a:hover{
+    color: blue;
+}
+.main-header__list a.active{
+    color: blue;
+}
+
+.product-form{
+    width: 70%;
+    margin: auto;
+}
+
+button{
+    background-color: white;
+    border: solid blue 2px;
+    font-size: 20px;
+    margin-left: 1rem;
+    border-radius: 6%;
+    margin-bottom: 0.5rem;
+}
+
+.btn_addproduct{
+    float: right;
+}
+
+.admin-btn{
+    padding: 1rem;
+}
+
+button:hover,
+button:active{
+    background-color: blue;
+    color: white;
+}
+
+.main-article{
+    border: solid grey 1px;
+    width:20rem;
+    margin: 5rem;
+    text-align: center;
+}
+.card-body{
+    border-top: solid grey 1px;
+    border-bottom: solid grey 1px;
+}
+
+img{
+    height: 200px;
+    width: 200px;
+}
+
+.main-product{
+    display: inline-flex;
+}
+
+main{
+    margin: 3%;
+}
+
+.article-main{
+    border: solid 1px grey;
+    text-align: center;
+    width: 30%;
+    float: left;
+    margin: 1rem;
+    min-width: 200px;
+}
+
+.article-head{
+    border-bottom: solid 1px gray;   
+}
+.article-body{
+    width: 100%;
+    object-fit: cover;
+}
+
+.article-foot{
+    border-top: solid 1px gray;
+}
+
+.form-box{
+    padding: 1.5rem;
+    margin: auto;
+    min-width: 40%;
+    width: 40%;
+    font-weight: bold;
+    font-size: 20px;
+    border: 0.5px solid grey;
+    overflow: hidden;
+}
+
+.form-control{
+    margin-bottom: 1rem;
+    width: 100%;
+}
+.form-control input{
+    margin-top: 0.5rem;
+}
+
+textarea{
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 0.5rem;
+}
+
+input{
+    font-size: 18px;
+    width: 100%;
+    padding: 0.3rem;
+    box-sizing: border-box;
+}
+
+.centered{
+    text-align: center;
+}
+
+.centered img{
+    height: 17rem;
+    width: 17rem;
+}
+
+

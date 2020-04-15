@@ -1,0 +1,23 @@
+{
+  "name": "shop-project",
+  "version": "1.0.0",
+  "description": "Project app converted to EJS",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "author": "Sachi Kanta Sahu",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "mysql2": "^2.1.0"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "data/products.json"
+    ]
+  }
+}

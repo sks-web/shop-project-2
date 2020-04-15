@@ -1,0 +1,23 @@
+<%- include("../layouts/header.ejs") %>
+<%- include("../layouts/body.ejs") %>
+        <h1>Product Name</h1>
+        <% if(productList.length > 0){ %>
+                <% for(var x in productList){%>
+                        <article class="article-main">
+                                <div class="article-head">
+                                        <h1><%= productList[x].title %></h1>
+                                </div>
+                                <div class="article-body">
+                                        <img src="<%= productList[x].imageUrl%>" alt="No Image Found">
+                                </div>
+                                <div class="article-foot">
+                                        <p><%= productList[x].description %></p>
+                                        <h3>Price : <%= productList[x].price %></h3>
+                                </div>
+                        </article>
+                <% }%>
+        <% }else{ %>
+                <h3>No Data Found</h3>
+        <% } %>
+        
+<%- include("../layouts/footer.ejs") %>
