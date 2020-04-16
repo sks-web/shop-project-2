@@ -6,7 +6,7 @@ const path = require("path");
 const shopRoutes = require("./routes/shop");
 const adminRoutes = require("./routes/admin");
 const errorPage = require("./controllers/error");
-const db = require("./util/database");
+const sequelize = require("./util/database");
 
 /*
 db.execute("SELECT * FROM products")
@@ -30,6 +30,13 @@ app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 
 app.use(errorPage.get404);
+
+sequelize.sync().then(result => {
+    console.log(result);
+})
+.catch(err => {
+    console.log(err);
+})
 
 app.listen(3000, () => {
     console.log("Server start at PORT 3000");
