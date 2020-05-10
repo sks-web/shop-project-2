@@ -18,6 +18,8 @@ router.get("/checkout", userController.getCheckout);
 
 router.get("/orders", userController.getOrders);
 
+router.post("/create-order", userController.postOrder);
+
 router.get("/products/:productId", userController.getProduct);
 
 

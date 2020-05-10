@@ -1,4 +1,25 @@
 <%- include("../layouts/header.ejs") %>
 <%- include("../layouts/body.ejs") %>
-<h1>You are in the Order section.</h1>        
+<% if(data.length > 0) { %>
+    <ol>
+        <% let i= 1; data.forEach(order => { %>
+            <li>
+                <h1># Order <%= i++ %></h1>
+                <% let total = 0; order.products.forEach(product => { %>
+                    <ul>
+                        <li>
+                            <h2><%= product.title %>(<%= product.orderItem.quantity %>)</h2>
+                            <% total = total + (product.price* product.orderItem.quantity) %>
+                        </li>
+                    </ul>
+                <% }) %>
+                <hr>
+                <h2>Total is Rs. <%= total %></h2>
+                <hr>
+            </li>
+        <% }) %>
+    </ol>
+<% } else { %>
+    <h1>No Orders</h1>
+<% } %>
 <%- include("../layouts/footer.ejs") %>
