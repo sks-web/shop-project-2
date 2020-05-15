@@ -1,21 +1,29 @@
-/*
-const mysql = require("mysql2");
+const mongdb = require("mongodb");
+const MongoClient = mongdb.MongoClient;
 
-const pool = mysql.createPool({
-    host: "localhost",
-    user: "root",
-    database: "node-complete",
-    password: "root"
-});
+const url = "mongodb://localhost:27017/product"
+let _db;
 
-module.exports = pool.promise();
-*/
+mongoConnect = callback => {
+    MongoClient.connect(url,{ useUnifiedTopology: true })
+    .then(client => {
+        console.log("Connected!");
+        _db = client.db();
+        callback();
+    })
+    .catch(err => {
+        console.log(err);
+        throw err;
+    });
+};
 
-const Sequelize = require("sequelize");
+const getDb = () => {
+    if(_db) {
+        return _db;
+    }
 
-const sequelize = new Sequelize("node-complete", "root", "root", {
-    dialect: "mysql",
-    host: "localhost"
-});
+    throw "No database found!"
+}
+exports.mongoConnect = mongoConnect;
+exports.getDb = getDb;
 
-module.exports = sequelize;
