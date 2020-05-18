@@ -17,7 +17,7 @@
                                 <div class="btn-action">
                                         <a href="/products/<%= productList[x]._id %>"><button class="btn_details">Details</button></a>
                                         <form action="/add-to-cart" method="post">
-                                                <input type="hidden" name="productId" value="<%= productList[x].id %>">
+                                                <input type="hidden" name="productId" value="<%= productList[x]._id %>">
                                                 <button class="btn_cart" type="submit">Add to Cart</button>
                                         </form>
                                 </div>
