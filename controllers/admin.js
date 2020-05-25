@@ -1,6 +1,4 @@
 const Product = require("../models/product");
-const mongodb = require("mongodb");
-const ObjectId = mongodb.ObjectId;
 
 exports.getAddProduct = (req, res, next) => {
     res.render("admin/edit-product", {
@@ -15,15 +13,15 @@ exports.addProduct = (req, res, next) => {
     const imageUrl = req.body.imageUrl;
     const description = req.body.description;
     const price = req.body.price;
-    const product = new Product(title, price, description, imageUrl, null, req.user._id);
+    const product = new Product({title: title, price: price, description: description, imageUrl: imageUrl, userId: req.user});
     product.save()
     .then(result =>{
-        console.log("Data Added");
+        console.log("Data Added To Database!");
         res.redirect("/admin/product");
     })
     .catch(err => {
         console.log(err);
-    })
+    });
 };
 
 exports.getEditProduct = (req, res, next) => {
@@ -55,11 +53,19 @@ exports.postEditProduct = (req, res, next) => {
     const updatePrice = req.body.price;
     const updatedImageUrl = req.body.imageUrl;
     const updatedDesc = req.body.description;
-    const product = new Product(updatedTitle, updatePrice, updatedDesc, updatedImageUrl, new ObjectId(prodID));
-    product.save()
+    
+    Product.findById(prodID)
+    .then(product => {
+
+        product.title = updatedTitle;
+        product.price = updatePrice;
+        product.description = updatedDesc;
+        product.imageUrl = updatedImageUrl;
+        return product.save();
+    })
     .then(result => {
-        console.log("Data updated");
-        res.redirect("/admin/product")
+        console.log("Product Updated!");
+        res.redirect("/admin/product");
     })
     .catch(err => {
         console.log(err);
@@ -67,7 +73,9 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-    Product.fetchAll()
+    Product.find()
+    // .select("title price -_id")
+    // .populate("userId", "name")
     .then(product => {
         console.log("Data Fetched");
         res.render("admin/product", {
@@ -83,7 +91,7 @@ exports.getProducts = (req, res, next) => {
 
 exports.getDeleteProduct = (req, res, next) => {
     const prodId = req.body.productId;
-    Product.deleteById(prodId)
+    Product.findByIdAndRemove(prodId)
     .then(result => {
         console.log("Data Deleted");
         res.redirect("/admin/product");

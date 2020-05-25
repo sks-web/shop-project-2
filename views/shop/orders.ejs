@@ -2,14 +2,14 @@
 <%- include("../layouts/body.ejs") %>
 <% if(data.length > 0) { %>
     <ol>
-        <% let i= 1; data.forEach(order => { %>
+        <% data.forEach(order => { %>
             <li>
-                <h1># Order <%= i++ %></h1>
-                <% let total = 0; order.items.forEach(product => { %>
+                <h1># Order ID <%= order._id  %></h1>
+                <% let total = 0; order.products.forEach(product => { %>
                     <ul>
                         <li>
-                            <h2><%= product.title %>(<%= product.quantity %>)</h2>
-                            <% total = total + (product.price* product.quantity) %>
+                            <h2><%= product.productData.title %>(<%= product.quantity %>)</h2>
+                            <% total = total + (product.productData.price* product.quantity) %>
                         </li>
                     </ul>
                 <% }) %>
