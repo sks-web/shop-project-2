@@ -1,0 +1,57 @@
+<%- include("../layouts/header.ejs") %> <%- include("../layouts/body.ejs") %>
+<form action="/signup" method="post" novalidate>
+  <% if (errorMessage) {%>
+  <div class="user-message user-message-error bounce-in-top">
+    <%= errorMessage %>
+  </div>
+  <% } %>
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+  <div class="form-box">
+    <div class="form-control">
+      <label for="name"><strong>Name :</strong></label>
+      <input
+        class="<%= validationError.find(e => e.param === 'name') ? 'invalid':'' %>"
+        type="name"
+        name="name"
+        id="name"
+        placeholder="Enter name"
+        value="<%= oldInput.name %>"
+      />
+    </div>
+    <div class="form-control">
+      <label for="email"><strong>E-mail :</strong></label>
+      <input
+        class="<%= validationError.find(e => e.param === 'email') ? 'invalid':'' %>"
+        type="email"
+        name="email"
+        id="email"
+        placeholder="Enter email"
+        value="<%= oldInput.email %>"
+      />
+    </div>
+    <div class="form-control">
+      <label for="password">Password :</label>
+      <input
+        class="<%= validationError.find(e => e.param === 'password') ? 'invalid':'' %>"
+        type="password"
+        name="password"
+        id="password"
+        placeholder="*********"
+        value="<%= oldInput.password %>"
+      />
+    </div>
+    <div class="form-control">
+      <label for="cpassword">Confirm Password :</label>
+      <input
+        class="<%= validationError.find(e => e.param === 'cpassword') ? 'invalid':'' %>"
+        type="password"
+        name="cpassword"
+        id="cpassword"
+        placeholder="*********"
+        value="<%= oldInput.cpassword %>"
+      />
+    </div>
+    <button type="submit" class="btn_login">Sign up</button>
+  </div>
+</form>
+<%- include("../layouts/footer.ejs") %>

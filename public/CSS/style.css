@@ -23,13 +23,13 @@ body{
     display: flex;
     align-items: center;
     padding: 0 4rem;
+    justify-content: space-between;
 }
 
 .main-header__item{
     margin: 0;
     padding: 0 2rem 0 0;
-    font-weight: bold;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
 }
  
 .main-header__item a{
@@ -192,4 +192,30 @@ input{
 ol li{
     list-style-type: none;
     color: green;
+}
+
+.user-message {
+    margin: auto;
+    width: 40%;
+    padding: 0.5rem;
+    border: 1px solid blue;
+    background-color: blue;
+    text-align: center;
+    border-radius: 3px;
+    color: white;
+}
+
+.user-message-error {
+    border: 1px solid rgba(214, 24, 24, 0.562);
+    background-color: rgba(214, 24, 24, 0.562);
+}
+
+.user-message-success {
+    border: 1px solid rgba(43, 233, 52, 0.562);
+    background-color: rgba(43, 233, 52, 0.562);
+}
+
+.invalid {
+    border-style: solid;
+    border-color: red;
 }

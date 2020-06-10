@@ -1,0 +1,16 @@
+<%- include("../layouts/header.ejs") %>
+<%- include("../layouts/body.ejs") %>
+<form action="/reset" method="post">
+        <% if (errorMessage) {%>
+                <div class="user-message user-message-error bounce-in-top"><%= errorMessage %></div>
+        <% } %>
+        <div class="form-box">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <div class="form-control">
+                        <label for="email"><strong>E-mail :</strong></label>
+                        <input type="email" name="email" id="email" placeholder="Enter email">
+                </div>
+                <button type="submit" class="btn_login">Reset Password</button>
+        </div>
+</form>
+<%- include("../layouts/footer.ejs") %>

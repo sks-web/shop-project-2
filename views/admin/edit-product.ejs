@@ -1,27 +1,75 @@
-<%- include("../layouts/header.ejs") %>
-<%- include("../layouts/body.ejs") %>
-<form action="/admin/<% if(editing){ %>edit-product<% }else{ %>add-product<% } %>" method="post">
-        <div class="form-box">
-                <div class="form-control">
-                        <label for="productName"><strong>Product Name :</strong></label>
-                        <input type="text" name="productName" placeholder="Enter product Name" value="<% if(editing){ %><%= product.title %><% } %>">
-                </div>
-                <div class="form-control">
-                        <label for="imageUrl">Image Url :</label>
-                        <input type="text" name="imageUrl" id="imageUrl" placeholder="Image URL" value="<% if(editing){ %><%= product.imageUrl %><% } %>">
-                </div>
-                <div class="form-control">
-                        <label for="Price">Price :</label>
-                        <input type="number" name="price" id="price" placeholder="Price" step="0.01" value="<% if(editing){ %><%= product.price %><% } %>">
-                </div>
-                <div class="form-control">
-                        <label for="decription">Decription :</label>
-                        <textarea name="description" id="description" cols="40" rows="10" placeholder="Decrption of product"><% if(editing){ %><%= product.description %><% } %></textarea>
-                </div>
-                <% if (editing) { %>
-                        <input type="hidden" value = "<%= product._id %>" name="productId">
-                <% } %>
-                <button type="submit" class="btn_addproduct"><% if(editing){ %> Update Product <% } else { %> Add Product <% } %></button>
-        </div>
+<%- include("../layouts/header.ejs") %> <%- include("../layouts/body.ejs") %>
+<form
+  action="/admin/<% if(editing){ %>edit-product<% }else{ %>add-product<% } %>"
+  method="post"
+  enctype="multipart/form-data"
+>
+  <% if (errorMessage) {%>
+  <div class="user-message user-message-error"><%= errorMessage %></div>
+  <% } %>
+
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+  <div class="form-box">
+    <div class="form-control">
+      <label for="productName"><strong>Product Name :</strong></label>
+      <input
+        type="text"
+        name="productName"
+        placeholder="Enter product Name"
+        value="<% if(editing || ifError){ %><%= product.title %><% } %>"
+        class="<%= validateError.find(e => e.param === 'productName')? 'invalid':'' %>"
+      />
+    </div>
+    <div class="form-control">
+      <label for="image">Image :</label>
+      <input
+        type="file"
+        name="image"
+        id="image"
+      />
+    </div>
+    <!-- <div class="form-control">
+      <label for="imageUrl">Image Url :</label>
+      <input
+        type="text"
+        name="imageUrl"
+        id="imageUrl"
+        placeholder="Image URL"
+        value="<% if(editing || ifError){ %><%= product.imageUrl %><% } %>"
+        class="<%= validateError.find(e => e.param === 'imageUrl')? 'invalid':'' %>"
+      />
+    </div> -->
+    <div class="form-control">
+      <label for="Price">Price :</label>
+      <input
+        type="number"
+        name="price"
+        id="price"
+        placeholder="Price"
+        step="0.01"
+        value="<% if(editing || ifError){ %><%= product.price %><% } %>"
+        class="<%= validateError.find(e => e.param === 'price')? 'invalid':'' %>"
+      />
+    </div>
+    <div class="form-control">
+      <label for="decription">Decription :</label>
+      <textarea
+        name="description"
+        id="description"
+        cols="40"
+        rows="10"
+        placeholder="Decrption of product"
+        class="<%= validateError.find(e => e.param === 'description')? 'invalid':'' %>"
+      >
+<% if(editing || ifError){ %><%= product.description %><% } %></textarea
+      >
+    </div>
+    <% if (editing) { %>
+    <input type="hidden" value="<%= product._id %>" name="productId" />
+    <% } %>
+    <button type="submit" class="btn_addproduct">
+      <% if(editing){ %> Update Product <% } else { %> Add Product <% } %>
+    </button>
+  </div>
 </form>
 <%- include("../layouts/footer.ejs") %>

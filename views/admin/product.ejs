@@ -8,7 +8,7 @@
                                         <h1><%= productList[x].title %></h1>
                                 </div>
                                 <div class="article-body">
-                                        <img src="<%= productList[x].imageUrl%>" alt="No Image Found">
+                                        <img src="/<%= productList[x].imageUrl%>" alt="No Image Found">
                                 </div>
                                 <div class="article-foot">
                                         <p><%= productList[x].description %></p>
@@ -17,6 +17,7 @@
                                 <div class="btn_action">
                                         <a href="/admin/edit-product/<%= productList[x]._id %>?edit=true"><button class="btn_edit">Edit</button></a>
                                         <form action="/admin/delete-product" method="post">
+                                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                                 <input type="hidden" value="<%= productList[x]._id %>" name="productId"> 
                                                 <button class="btn_delete" type="submit" >Delete</button>
                                         </form>

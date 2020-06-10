@@ -4,7 +4,7 @@
     <ol>
         <% data.forEach(order => { %>
             <li>
-                <h1># Order ID <%= order._id  %></h1>
+                <h1># Order ID <%= order._id  %></h1><p>Invoice (<a href="/orders/<%= order._id %>">Link</a>)</p>
                 <% let total = 0; order.products.forEach(product => { %>
                     <ul>
                         <li>

@@ -1,0 +1,36 @@
+<%- include("../layouts/header.ejs") %> <%- include("../layouts/body.ejs") %>
+<form action="/login" method="post" novalidate>
+  <% if (errorMessage) {%>
+  <div class="user-message user-message-error"><%= errorMessage %></div>
+  <% } %>
+  <div class="form-box">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+    <div class="form-control">
+      <label for="email"><strong>E-mail :</strong></label>
+      <input 
+        type="email" 
+        name="email" 
+        id="email" 
+        placeholder="Enter email" 
+        class="<%= validationErrors.find(e => e.param === 'email')? 'invalid':'' %>"
+        value="<%= oldInput.email %>"
+        />
+    </div>
+    <div class="form-control">
+      <label for="password">Password :</label>
+      <input
+        type="password"
+        name="password"
+        id="password"
+        placeholder="*********"
+        class="<%= validationErrors.find(e => e.param === 'password')? 'invalid':'' %>"
+        value="<%= oldInput.password %>"
+      />
+    </div>
+    <button type="submit" class="btn_login">Login</button>
+  </div>
+</form>
+<div style="text-align: center;">
+  Forget Password ?<a href="/reset">Click here</a> to reset password
+</div>
+<%- include("../layouts/footer.ejs") %>

@@ -1,6 +1,9 @@
 <%- include("../layouts/header.ejs") %>
 <%- include("../layouts/body.ejs") %>
         <h1>Product Name</h1>
+        <% if (successMessage) { %>
+                <div class="user-message user-message-success"><%= successMessage %></div>
+        <% } %>
         <% if(productList.length > 0){ %>
                 <% for(var x in productList){%>
                         <article class="article-main">
