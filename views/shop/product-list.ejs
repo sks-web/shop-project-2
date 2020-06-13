@@ -26,6 +26,7 @@
                                 </div>
                         </article>
                 <% }%>
+                <%- include("../layouts/pagination.ejs",{currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage:hasNextPage, hasPreviousPage: hasPreviousPage}) %>
         <% }else{ %>
                 <h3>No Data Found</h3>
         <% } %>

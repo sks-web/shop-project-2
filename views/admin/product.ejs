@@ -16,16 +16,15 @@
                                 </div>
                                 <div class="btn_action">
                                         <a href="/admin/edit-product/<%= productList[x]._id %>?edit=true"><button class="btn_edit">Edit</button></a>
-                                        <form action="/admin/delete-product" method="post">
-                                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                                                <input type="hidden" value="<%= productList[x]._id %>" name="productId"> 
-                                                <button class="btn_delete" type="submit" >Delete</button>
-                                        </form>
+                                        <!-- <form action="/admin/delete-product" method="post"></form> -->
+                                                <input type="hidden" name="_csrf" class="csrf" value="<%= csrfToken %>">
+                                                <input type="hidden" value="<%= productList[x]._id %>" name="productId" class="productId"> 
+                                                <button class="btn_delete" type="button" onclick="deleteProduct(this)">Delete</button>
+                                        <!-- </form> -->
                                 </div>
                         </article>
                 <% }%>
         <% }else{ %>
                 <h3>No Data Found</h3>
         <% } %>
-        
 <%- include("../layouts/footer.ejs") %>

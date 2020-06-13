@@ -1,23 +1,31 @@
-<%- include("../layouts/header.ejs") %>
-<%- include("../layouts/body.ejs") %>
-        <h1>Product Name</h1>
-        <% if(productList.length > 0){ %>
-                <% for(var x in productList){%>
-                        <article class="article-main">
-                                <div class="article-head">
-                                        <h1><%= productList[x].title %></h1>
-                                </div>
-                                <div class="article-body">
-                                        <img src="<%= productList[x].imageUrl%>" alt="No Image Found">
-                                </div>
-                                <div class="article-foot">
-                                        <p><%= productList[x].description %></p>
-                                        <h3>Price : <%= productList[x].price %></h3>
-                                </div>
-                        </article>
-                <% }%>
-        <% }else{ %>
-                <h3>No Data Found</h3>
-        <% } %>
-        
-<%- include("../layouts/footer.ejs") %>
+<%- include("../layouts/header.ejs") %> <%- include("../layouts/body.ejs") %> <%
+if(products.length > 0) { %>
+<div class="cart-card">
+  <% products.forEach(p => { %>
+  <div class="cart_items">
+    <h1><%= p.productId.title %></h1>
+    <h1><%= p.quantity %></h1>
+  </div>
+  <% }) %>
+  <div>
+    <h2>Total: <%= totalSum %></h2>
+  </div>
+  <div>
+    <button id="order-btn" class="btn">ORDER</button>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+      // Set your publishable key: remember to change this to your live publishable key in production
+      // See your keys here: https://dashboard.stripe.com/account/apikeys
+      var stripe = Stripe(
+        "pk_test_51GtSFvH6V8a4bNufCygjhzR9vMtuppdkBLuA2hoM0sXkBeC7K8gIgpQCDUUb9hfeTLouQdsdce9N9HaobFxqeNde006kCTpGGF"
+      );
+      var orderBtn = document.getElementById("order-btn");
+      orderBtn.addEventListener("click", function(){
+        stripe.redirectToCheckout({
+                sessionId: "<%= sessionId %>"
+        });
+      });
+    </script>
+  </div>
+</div>
+<% } %> <%- include("../layouts/footer.ejs") %>

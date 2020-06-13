@@ -4,6 +4,7 @@
         <% if (successMessage) { %>
                 <div class="user-message user-message-success"><%= successMessage %></div>
         <% } %>
+        <div class="main_div">
         <% if(productList.length > 0){ %>
                 <% for(var x in productList){%>
                         <article class="article-main">
@@ -19,8 +20,9 @@
                                 </div>
                         </article>
                 <% }%>
+        </div>
+        <%- include("../layouts/pagination.ejs", {currentPage: currentPage, nextPage: nextPage, previousPage: previousPage, lastPage: lastPage, hasNextPage:hasNextPage, hasPreviousPage: hasPreviousPage}) %>
         <% }else{ %>
                 <h3>No Data Found</h3>
         <% } %>
-        
 <%- include("../layouts/footer.ejs") %>

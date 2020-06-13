@@ -1,23 +1,44 @@
 // jshint esversion:6
+require("dotenv").config()
 const fs = require("fs");
 const Product = require("../models/product");
 const Order = require("../models/order");
 const path = require("path");
 const PDFDocument = require("pdfkit");
 const { v4 } = require("uuid");
+const stripe = require("stripe")(process.env.STRIPE_SK);
+
+const ITEMS_PER_PAGE = 2;
 
 //Get first page with all product details
 exports.dispProduct = (req, res, next) => {
+    const page = +req.query.page || 1;
+  let totalItems = 0;
+
   Product.find()
+    .countDocuments()
+    .then((numProduct) => {
+      totalItems = numProduct;
+      return Product.find()
+        .skip((page - 1) * ITEMS_PER_PAGE)
+        .limit(ITEMS_PER_PAGE);
+    })
     .then((products) => {
       console.log("Data fetched");
       res.render("shop/product-list", {
         pageTitle: "Product Page",
         path: "/products",
         productList: products,
+        currentPage: page,
+        hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
       });
     })
     .catch((err) => {
+        console.log(err);
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -26,13 +47,23 @@ exports.dispProduct = (req, res, next) => {
 
 // Get the first page
 exports.getIndex = (req, res, next) => {
+  
   let message = req.flash("success");
   let msg = null;
   if (message.length > 0) {
     msg = message[0];
   }
-  console.log(v4().toString().replace("-", ""));
+  const page = +req.query.page || 1;
+  let totalItems = 0;
+
   Product.find()
+    .countDocuments()
+    .then((numProduct) => {
+      totalItems = numProduct;
+      return Product.find()
+        .skip((page - 1) * ITEMS_PER_PAGE)
+        .limit(ITEMS_PER_PAGE);
+    })
     .then((products) => {
       console.log("Data fetched");
       res.render("shop/index", {
@@ -40,9 +71,16 @@ exports.getIndex = (req, res, next) => {
         path: "/",
         productList: products,
         successMessage: msg,
+        currentPage: page,
+        hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
       });
     })
     .catch((err) => {
+        console.log(err);
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -153,14 +191,6 @@ exports.getOrders = (req, res, next) => {
     });
 };
 
-// // Get Checkout Page
-// exports.getCheckout = (req, res, next) => {
-//     res.render("shop/checkout",{
-//         path:"/checkout",
-//         pageTitle: "Checkout"
-//     })
-// }
-
 // Get single Products
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId;
@@ -210,27 +240,22 @@ exports.getInvoice = (req, res, next) => {
       pdfDoc.text("---------------------------");
       let totalPrice = 0;
       order.products.forEach((prod) => {
-          totalPrice += prod.quantity * prod.productData.price;
-        pdfDoc.fontSize(14).text(
-          prod.productData.title +
-            " - " +
-            prod.quantity +
-            " x " +
-            " Rs. " +
-            prod.productData.price
-        );
+        totalPrice += prod.quantity * prod.productData.price;
+        pdfDoc
+          .fontSize(14)
+          .text(
+            prod.productData.title +
+              " - " +
+              prod.quantity +
+              " x " +
+              " Rs. " +
+              prod.productData.price
+          );
       });
       pdfDoc.text("Total Price: Rs. " + totalPrice);
 
       pdfDoc.end();
-      // fs.readFile(invoicePath, (err, data) => {
-      //     if(err) {
-      //         return next(err);
-      //     }
-      //     res.setHeader("Content-Type","application/pdf");
-      //     res.setHeader("Content-Disposition", "inline; filename = '"+ invoiceName + "'" );
-      //     res.send(data);
-      // })
+
       const file = fs.createReadStream(invoicePath);
 
       file.pipe(res);
@@ -239,3 +264,47 @@ exports.getInvoice = (req, res, next) => {
       next(err);
     });
 };
+
+exports.getCheckout = (req, res, next) => {
+  let products;
+  let total = 0;
+  req.user
+    .populate("cart.items.productId")
+    .execPopulate()
+    .then((user) => {
+      products = user.cart.items;
+      products.forEach(p => {
+        total += p.quantity * p.productId.price;
+      });
+
+      return stripe.checkout.sessions.create({
+        payment_method_types: ["card"],
+        line_items: products.map(p => {
+          return {
+            name: p.productId.title,
+            description: p.productId.description,
+            amount: p.productId.price * 100,
+            currency: "inr",
+            quantity: p.quantity
+          };
+        }),
+        success_url: req.protocol + "://"+ req.get("host") + "/checkout/success", //http://localhost:3000/checkout/success
+        cancel_url: req.protocol + "://"+ req.get("host") + "/checkout/cancel"
+      });
+
+    })
+    .then(session => {
+      res.render("shop/checkout", {
+        path: "/checkout",
+        pageTitle: "Checkout Page",
+        products: products,
+        totalSum: total,
+        sessionId: session.id
+      });
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+}

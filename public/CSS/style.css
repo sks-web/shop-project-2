@@ -94,13 +94,14 @@ img{
 
 main{
     margin: 3%;
+    box-sizing: content-box;
 }
 
 .article-main{
     border: solid 1px grey;
     text-align: center;
+    display: inline-block;
     width: 30%;
-    float: left;
     margin: 1rem;
     min-width: 200px;
 }
@@ -218,4 +219,19 @@ ol li{
 .invalid {
     border-style: solid;
     border-color: red;
+}
+
+.pagination {
+    text-align: center;
+}
+
+.pagination a {
+    text-decoration: none;
+    color: #00695c;
+    padding: 0.5rem;
+    border: 1px solid #00695c;
+    margin: 0 1rem;
+}
+.main_div {
+    width: 100%;
 }

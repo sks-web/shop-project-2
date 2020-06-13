@@ -15,11 +15,15 @@ router.post("/add-to-cart",isAuth, userController.postCart);
 
 router.post("/cart-delete-item",isAuth, userController.postCartDeleteProduct);
 
-// // router.get("/checkout",isAuth userController.getCheckout);
+router.get("/checkout",isAuth, userController.getCheckout);
+
+router.get("/checkout/success", userController.postOrder);
+
+router.get("/checkout/cancel", userController.getCheckout);
 
 router.get("/orders",isAuth, userController.getOrders);
 
-router.post("/create-order",isAuth, userController.postOrder);
+// router.post("/create-order",isAuth, userController.postOrder);
 
 router.get("/products/:productId", userController.getProduct);
 

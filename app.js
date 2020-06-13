@@ -95,7 +95,7 @@ app.get("/500", errorPage.get500);
 app.use(errorPage.get404);
 
 app.use((error, req, res, next) => {
-    // res.redirect("500");
+    console.log(error);
     res.status(505).render("500", {
         pageTitle: "Error!",
         path: "/500",
